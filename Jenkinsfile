@@ -5,6 +5,7 @@ pipeline {
         IMAGE_NAME = "saifudheenpv/notes-app"
         IMAGE_TAG = "1.0"
         DOCKER_CREDS = credentials('dockerhub-creds')
+        SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
@@ -16,27 +17,35 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('SonarQube Scan') {
             steps {
-                script {
-                    sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG ./app/backend'
+                withSonarQubeEnv('sonarqube') {
+                    sh '''
+                    sonar-scanner \
+                      -Dsonar.projectKey=notes-app \
+                      -Dsonar.sources=app/backend \
+                      -Dsonar.host.url=http://localhost:9000 \
+                      -Dsonar.login=$SONAR_TOKEN
+                    '''
                 }
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Build Docker Image') {
             steps {
-                script {
-                    sh 'echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin'
-                }
+                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG ./app/backend'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                sh 'echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin'
             }
         }
 
         stage('Push Image') {
             steps {
-                script {
-                    sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
-                }
+                sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
             }
         }
     }
