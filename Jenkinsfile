@@ -24,7 +24,7 @@ pipeline {
                     sonar-scanner \
                       -Dsonar.projectKey=notes-app \
                       -Dsonar.sources=app/backend \
-                      -Dsonar.host.url=http://localhost:9000 \
+                      -Dsonar.host.url=http://10.155.115.101:9000/ \
                       -Dsonar.login=$SONAR_TOKEN
                     '''
                 }
