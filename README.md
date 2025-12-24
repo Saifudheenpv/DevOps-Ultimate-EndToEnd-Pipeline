@@ -8,30 +8,16 @@ This repository is designed for **real-world DevOps interviews**, not tutorials.
 
 ## 🌈 Architecture Diagram (High Level)
 
-```mermaid
-flowchart LR
-    Dev[Developer]
-    GitHub[(GitHub)]
-    Jenkins[Jenkins CI]
-    Sonar[SonarQube]
-    Trivy[Trivy]
-    DockerHub[(Docker Hub)]
+<p align="center">
+  <img src="docs/images/devops-architecture.png"
+       alt="DevOps End-to-End Architecture"
+       width="900"/>
+</p>
 
-    subgraph K8s[Kubernetes Cluster]
-        Ingress[NGINX Ingress]
-        App[notes-app]
-        DB[(PostgreSQL)]
-    end
+<p align="center">
+  <b>End-to-End DevOps Pipeline with CI/CD, DevSecOps, Docker, Kubernetes & NGINX Ingress</b>
+</p>
 
-    Dev --> GitHub
-    GitHub --> Jenkins
-    Jenkins --> Sonar
-    Jenkins --> Trivy
-    Jenkins --> DockerHub
-    DockerHub --> App
-    Ingress --> App
-    App --> DB
-```
 
 ---
 
