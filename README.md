@@ -10,17 +10,17 @@ This repository is designed for **real-world DevOps interviews**, not tutorials.
 
 ```mermaid
 flowchart LR
-    Dev[👨‍💻 Developer]
-    GitHub[(GitHub Repo)]
-    Jenkins[🧩 Jenkins CI]
-    Sonar[🔍 SonarQube]
-    Trivy[🛡️ Trivy]
-    DockerHub[(🐳 Docker Hub)]
+    Dev[Developer]
+    GitHub[(GitHub)]
+    Jenkins[Jenkins CI]
+    Sonar[SonarQube]
+    Trivy[Trivy]
+    DockerHub[(Docker Hub)]
 
-    subgraph K8s[☸️ Kubernetes Cluster]
-        Ingress[🌐 NGINX Ingress]
-        App[🚀 notes-app\n(Flask, 2 replicas)]
-        DB[(🗄️ PostgreSQL)]
+    subgraph K8s[Kubernetes Cluster]
+        Ingress[NGINX Ingress]
+        App[notes-app]
+        DB[(PostgreSQL)]
     end
 
     Dev --> GitHub
@@ -31,18 +31,6 @@ flowchart LR
     DockerHub --> App
     Ingress --> App
     App --> DB
-
-    classDef dev fill:#cce5ff,stroke:#004085
-    classDef ci fill:#e2e3e5,stroke:#383d41
-    classDef sec fill:#fff3cd,stroke:#856404
-    classDef reg fill:#d4edda,stroke:#155724
-    classDef k8s fill:#f8d7da,stroke:#721c24
-
-    class Dev dev
-    class Jenkins ci
-    class Sonar,Trivy sec
-    class DockerHub reg
-    class Ingress,App,DB k8s
 ```
 
 ---
