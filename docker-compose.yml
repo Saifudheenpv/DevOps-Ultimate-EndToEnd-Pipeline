@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: notes-db
+    environment:
+      POSTGRES_DB: notesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  app:
+    image: saifudheenpv/notes-app:1.0
+    container_name: notes-app
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: notesdb
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
