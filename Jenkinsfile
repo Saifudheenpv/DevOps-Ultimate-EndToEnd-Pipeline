@@ -24,7 +24,6 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm \
-                  -e SONAR_HOST_URL=${SONAR_HOST_URL} \
                   -v "$PWD:/usr/src" \
                   sonarsource/sonar-scanner-cli \
                   -Dsonar.projectKey=notes-app \
@@ -41,6 +40,19 @@ pipeline {
                 docker build \
                   -t ${IMAGE_NAME}:${IMAGE_TAG} \
                   ./app/backend
+                '''
+            }
+        }
+
+        stage('Trivy Image Security Scan') {
+            steps {
+                sh '''
+                docker run --rm \
+                  -v /var/run/docker.sock:/var/run/docker.sock \
+                  aquasec/trivy:latest image \
+                  --exit-code 1 \
+                  --severity CRITICAL,HIGH \
+                  ${IMAGE_NAME}:${IMAGE_TAG}
                 '''
             }
         }
@@ -66,10 +78,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ CI Pipeline completed successfully"
+            echo "✅ CI pipeline passed (Quality + Security)"
         }
         failure {
-            echo "❌ CI Pipeline failed"
+            echo "❌ CI pipeline failed due to security or quality issues"
         }
     }
 }
