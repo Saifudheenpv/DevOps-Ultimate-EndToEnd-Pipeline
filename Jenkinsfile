@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        sonarQubeScanner 'sonar-scanner'
+    }
+
+
     environment {
         IMAGE_NAME = "saifudheenpv/notes-app"
         IMAGE_TAG = "1.0"
