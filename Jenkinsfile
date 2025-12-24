@@ -24,12 +24,13 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm \
-                  -e SONAR_HOST_URL=$SONAR_HOST_URL \
-                  -e SONAR_LOGIN=$SONAR_TOKEN \
+                  -e SONAR_HOST_URL=${SONAR_HOST_URL} \
                   -v "$PWD:/usr/src" \
                   sonarsource/sonar-scanner-cli \
                   -Dsonar.projectKey=notes-app \
-                  -Dsonar.sources=app/backend
+                  -Dsonar.sources=app/backend \
+                  -Dsonar.host.url=${SONAR_HOST_URL} \
+                  -Dsonar.login=${SONAR_TOKEN}
                 '''
             }
         }
